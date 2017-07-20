@@ -1,34 +1,21 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
+// TesterProject.cpp : Defines the entry point for the console application.
+//
+
 #include "stdafx.h"
 #include <stdio.h>
-#include <time.h>
 #include <string>
 #include <atlbase.h>
 #include <fstream>
+#include <iostream>
+#include <Windows.h>
+#include <time.h>
 
 #define LOGFILE "C:\\WinPasswordFilter\\FilterLog.txt"
 #define DICTIONARYFILE "C:\\WinPasswordFilter\\Dictionary.txt"
 
 using namespace std;
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
-	return TRUE;
-}
-
 // This is a helper function to write log lines to file
-// TODO: create WinPasswordFilter folder if it does not exist
 void WriteToLog(const char* str)
 {
 	if (NULL == str)
@@ -50,7 +37,6 @@ void WriteToLog(const char* str)
 // Checks if the password exists in the dictionary
 // TODO: maybe invert true/false?
 // TODO: optimize file search
-// TODO: clear password from memory!!! securezeromemory
 BOOLEAN DictionaryCheck(wstring pass) {
 
 	wstring line;
@@ -75,47 +61,6 @@ BOOLEAN DictionaryCheck(wstring pass) {
 
 }
 
-/////////////////////////////////////////////
-// Exported function
-// -----------------
-// Initialization of Password filter.
-// This implementation just returns TRUE
-// to let LSA know everything is fine
-BOOLEAN __stdcall InitializeChangeNotify(void)
-{
-	WriteToLog("InitializeChangeNotify()");
-	return TRUE;
-}
-
-////////////////////////////////////////////
-// Exported function
-// -----------------
-// This function is called by LSA when password
-// was successfully changed.
-//
-// This implementation just returns 0 (Success)
-NTSTATUS __stdcall PasswordChangeNotify(
-	PUNICODE_STRING UserName,
-	ULONG RelativeId,
-	PUNICODE_STRING NewPassword
-)
-{
-	WriteToLog("PasswordChangeNotify()");
-	return 0;
-}
-
-////////////////////////////////////////////
-// Exported function
-// -----------------
-// This function actually validates
-// a new password.
-// LSA calls this function when a password is assign to a new user
-// or password is changed on exisiting user.
-// 
-// This function return TRUE is password meets requirements
-// that filter checks; FALSE is password does NOT meet these requirements
-//
-// In our implementation, specified Regular Expression must match new password
 BOOLEAN __stdcall PasswordFilter(
 	PUNICODE_STRING AccountName,
 	PUNICODE_STRING FullName,
@@ -165,6 +110,7 @@ BOOLEAN __stdcall PasswordFilter(
 	if (NULL != wszPassword)
 	{
 		ZeroMemory(wszPassword, Password->Length); // TODO: securezeromemory?
+
 												   // Assure that there is no compiler optimizations and read random byte
 												   // from cleaned password string
 		srand(time(NULL));
@@ -174,5 +120,27 @@ BOOLEAN __stdcall PasswordFilter(
 	}
 
 	return retVal;
-	
+
 }
+
+
+int main()
+{
+
+	WCHAR stringBuffer[20] = L"koliko123";
+	UNICODE_STRING  string;
+
+
+	string.Buffer = stringBuffer;
+	string.Length = 20;
+	string.MaximumLength = sizeof(stringBuffer);
+
+	PasswordFilter(&string, &string, &string, TRUE);
+
+	while(true){
+
+	}
+
+    return 0;
+}
+
