@@ -109,7 +109,7 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 	transform(fullName.begin(), fullName.end(), fullName.begin(), towlower);
 	transform(pwd.begin(), pwd.end(), pwd.begin(), towlower);
 
-	if (pwd.find(accName) != string::npos) {
+	if (accName != L"" && pwd.find(accName) != string::npos) {
 		return FALSE;
 	}
 
@@ -127,7 +127,7 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 		}
 	}
 
-	if (pwd.find(fullName) != string::npos) {
+	if (fullName != L"" && pwd.find(fullName) != string::npos) {
 		return FALSE;
 	}
 	
@@ -253,8 +253,8 @@ int main()
 
 	WCHAR stringBuffer[30] = L"koliko123";
 
-	WCHAR fnBuffer[40] = L"David Vuletic";
-	WCHAR anBuffer[40] = L"bleja93";
+	WCHAR fnBuffer[40] = L"";
+	WCHAR anBuffer[40] = L"Vuletic";
 	UNICODE_STRING  fn;
 	UNICODE_STRING  an;
 

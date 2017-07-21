@@ -109,7 +109,7 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 	transform(fullName.begin(), fullName.end(), fullName.begin(), towlower);
 	transform(pwd.begin(), pwd.end(), pwd.begin(), towlower);
 
-	if (pwd.find(accName) != string::npos) {
+	if (accName != L"" && pwd.find(accName) != string::npos) {
 		return FALSE;
 	}
 
@@ -127,7 +127,7 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 		}
 	}
 
-	if (pwd.find(fullName) != string::npos) {
+	if (fullName != L"" && pwd.find(fullName) != string::npos) {
 		return FALSE;
 	}
 
