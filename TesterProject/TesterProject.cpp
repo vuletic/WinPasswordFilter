@@ -1,6 +1,4 @@
 // TesterProject.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include <stdio.h>
 #include <string>
@@ -9,6 +7,8 @@
 #include <iostream>
 #include <Windows.h>
 #include <time.h>
+#include <cwctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -50,6 +50,9 @@ BOOLEAN DictionaryCheck(wstring pass) {
 	wstring line;
 	wifstream dict(DictionaryFile);
 
+	//transform to lowercase for case insensitivity
+	transform(pass.begin(), pass.end(), pass.begin(), towlower);
+
 	if (dict.is_open())
 	{
 		while (getline(dict, line))
@@ -76,6 +79,9 @@ BOOLEAN PartialCheck(wstring pass) {
 	wstring line;
 	wifstream dict(PartialDictionaryFile);
 
+	//transform to lowercase for case insensitivity
+	transform(pass.begin(), pass.end(), pass.begin(), towlower);
+
 	if (dict.is_open())
 	{
 		while (getline(dict, line))
@@ -95,9 +101,13 @@ BOOLEAN PartialCheck(wstring pass) {
 
 }
 
-// TODO: case insensetive
 // TODO: watch for unicode
 BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
+
+	// transform to lowercase for case insensitivity
+	transform(accName.begin(), accName.end(), accName.begin(), towlower);
+	transform(fullName.begin(), fullName.end(), fullName.begin(), towlower);
+	transform(pwd.begin(), pwd.end(), pwd.begin(), towlower);
 
 	if (pwd.find(accName) != string::npos) {
 		return FALSE;
@@ -125,8 +135,8 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 	return TRUE;
 }
 
-// TODO: call checks based on settings 
-BOOLEAN __stdcall PasswordFilter(
+
+BOOLEAN __stdcall PasswordFilter( // TODO: call checks based on settings 
 	PUNICODE_STRING AccountName,
 	PUNICODE_STRING FullName,
 	PUNICODE_STRING Password,
@@ -137,6 +147,10 @@ BOOLEAN __stdcall PasswordFilter(
 	WriteToLog("Entering PasswordFilter()");
 
 	BOOLEAN retVal = true;
+
+	// TODO: read from settings (create function)
+	int minChars = 4;
+	int maxChars = 20;
 
 	wchar_t* wszPassword = NULL;
 	wstring wstrPassword;
@@ -182,8 +196,15 @@ BOOLEAN __stdcall PasswordFilter(
 
 
 		// Perform checks
-		WriteToLog("User data check");
-		retVal = UserDataCheck(wstrAccountName, wstrFullName, wstrPassword);
+		WriteToLog("Number of characters check");
+		if (wstrPassword.length() < minChars || wstrPassword.length() > maxChars) {
+			retVal = FALSE;
+		}
+
+		if (retVal){
+			WriteToLog("User data check");
+			retVal = UserDataCheck(wstrAccountName, wstrFullName, wstrPassword);
+		}
 
 		if (retVal) {
 			WriteToLog("Partial check");
