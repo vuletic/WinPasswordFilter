@@ -1,48 +1,40 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 #include <stdio.h>
-#include <time.h>
 #include <string>
 #include <atlbase.h>
 #include <fstream>
-
-#define LOGFILE "C:\\WinPasswordFilter\\FilterLog.txt"
-#define DICTIONARYFILE "C:\\WinPasswordFilter\\Dictionary.txt"
+#include <iostream>
+#include <Windows.h>
+#include <time.h>
 
 using namespace std;
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
-	return TRUE;
-}
+const wstring Root = L"C:\\WinPasswordFilter\\";
+const wstring LogFile = Root + L"FilterLog.txt";
+const wstring DictionaryFile = Root + L"Dictionary.txt";
+const wstring PartialDictionaryFile = Root + L"PartialDictionary.txt";
+
 
 // This is a helper function to write log lines to file
-// TODO: create WinPasswordFilter folder if it does not exist
-void WriteToLog(const char* str)
-{
-	if (NULL == str)
+void WriteToLog(string str) {
+
+	if (str.empty())
 	{
 		return;
 	}
-	FILE* log;
-	log = fopen(LOGFILE, "a+");
-	if (NULL == log)
+
+	// If directory exists or is successfully created
+	if (CreateDirectory(Root.c_str(), NULL) || ERROR_ALREADY_EXISTS == GetLastError())
 	{
-		return;
+		ofstream log(LogFile, ios::app);
+
+		if (log.is_open())
+		{
+			log << str + "\r\n";
+			log.close();
+		}
 	}
-	fprintf(log, "%s\r\n", str);
-	fclose(log);
 
 	return;
 }
@@ -54,7 +46,7 @@ void WriteToLog(const char* str)
 BOOLEAN DictionaryCheck(wstring pass) {
 
 	wstring line;
-	wifstream dict(DICTIONARYFILE);
+	wifstream dict(DictionaryFile);
 
 	if (dict.is_open())
 	{
@@ -73,6 +65,62 @@ BOOLEAN DictionaryCheck(wstring pass) {
 
 	return TRUE;
 
+}
+
+// check if password contains substring from dictionary
+// TODO: make case insensetive?
+BOOLEAN PartialCheck(wstring pass) {
+
+	wstring line;
+	wifstream dict(PartialDictionaryFile);
+
+	if (dict.is_open())
+	{
+		while (getline(dict, line))
+		{
+			if (pass.find(line) != string::npos) {
+				dict.close();
+				return FALSE;
+			}
+		}
+		dict.close();
+	}
+	else { // RETURNS TRUE IF FILE CANNOT BE OPENED (does not exist)
+		return TRUE;
+	}
+
+	return TRUE;
+
+}
+
+// TODO: case insensetive
+// TODO: watch for unicode
+BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
+
+	if (pwd.find(accName) != string::npos) {
+		return FALSE;
+	}
+
+	wstring delimiter = L" ";
+
+	size_t pos = 0;
+	wstring token;
+
+	// tokenize full name and check if it is contained in password
+	while ((pos = fullName.find(delimiter)) != std::string::npos) {
+		token = fullName.substr(0, pos);
+		fullName.erase(0, pos + delimiter.length());
+		if (pwd.find(token) != string::npos) {
+			return FALSE;
+		}
+	}
+
+	if (pwd.find(fullName) != string::npos) {
+		return FALSE;
+	}
+
+
+	return TRUE;
 }
 
 /////////////////////////////////////////////
@@ -114,9 +162,7 @@ NTSTATUS __stdcall PasswordChangeNotify(
 // 
 // This function return TRUE is password meets requirements
 // that filter checks; FALSE is password does NOT meet these requirements
-//
-// In our implementation, specified Regular Expression must match new password
-BOOLEAN __stdcall PasswordFilter(
+BOOLEAN __stdcall PasswordFilter( // TODO: call checks based on settings 
 	PUNICODE_STRING AccountName,
 	PUNICODE_STRING FullName,
 	PUNICODE_STRING Password,
@@ -131,8 +177,15 @@ BOOLEAN __stdcall PasswordFilter(
 	wchar_t* wszPassword = NULL;
 	wstring wstrPassword;
 
+	wchar_t* wszAccountName = NULL;
+	wstring wstrAccountName;
+
+	wchar_t* wszFullName = NULL;
+	wstring wstrFullName;
+
 	try
 	{
+		// Convert Unicode Strings to wstring
 		wszPassword = new wchar_t[Password->Length + 1];
 		if (NULL == wszPassword)
 		{
@@ -140,12 +193,43 @@ BOOLEAN __stdcall PasswordFilter(
 		}
 		wcsncpy(wszPassword, Password->Buffer, Password->Length);
 		wszPassword[Password->Length] = 0;
-
-		WriteToLog("Going to check password");
 		wstrPassword = wszPassword;
 
-		retVal = DictionaryCheck(wstrPassword);
 
+		wszAccountName = new wchar_t[AccountName->Length + 1];
+		if (NULL == wszAccountName)
+		{
+			throw E_OUTOFMEMORY;
+		}
+		wcsncpy(wszAccountName, AccountName->Buffer, AccountName->Length);
+		wszAccountName[AccountName->Length] = 0;
+		wstrAccountName = wszAccountName;
+
+
+		wszFullName = new wchar_t[FullName->Length + 1];
+		if (NULL == wszFullName)
+		{
+			throw E_OUTOFMEMORY;
+		}
+		wcsncpy(wszFullName, FullName->Buffer, FullName->Length);
+		wszFullName[FullName->Length] = 0;
+		wstrFullName = wszFullName;
+
+
+
+		// Perform checks
+		WriteToLog("User data check");
+		retVal = UserDataCheck(wstrAccountName, wstrFullName, wstrPassword);
+
+		if (retVal) {
+			WriteToLog("Partial check");
+			retVal = PartialCheck(wstrPassword);
+		}
+
+		if (retVal) {
+			WriteToLog("Full check");
+			retVal = DictionaryCheck(wstrPassword);
+		}
 
 	}
 	catch (HRESULT)
@@ -160,13 +244,14 @@ BOOLEAN __stdcall PasswordFilter(
 
 	// Erase all temporary password data
 	// for security reasons
-	wstrPassword.replace(0, wstrPassword.length(), wstrPassword.length(), (wchar_t)'?');
+	wstrPassword.replace(0, wstrPassword.length(), wstrPassword.length(), (wchar_t)'?');  // TODO: same thing on copies in functions?
 	wstrPassword.erase();
 	if (NULL != wszPassword)
 	{
-		ZeroMemory(wszPassword, Password->Length); // TODO: securezeromemory?
-												   // Assure that there is no compiler optimizations and read random byte
-												   // from cleaned password string
+		SecureZeroMemory(wszPassword, Password->Length);
+
+		// Assure that there is no compiler optimizations and read random byte
+		// from cleaned password string
 		srand(time(NULL));
 		wchar_t wch = wszPassword[rand() % Password->Length];
 		delete[] wszPassword;
@@ -174,5 +259,5 @@ BOOLEAN __stdcall PasswordFilter(
 	}
 
 	return retVal;
-	
+
 }
