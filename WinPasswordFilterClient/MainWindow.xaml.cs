@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace WinPasswordFilterClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string _settingsFile = @"C:\WinPasswordFilter\settings.txt";
+        private const string _settingsFile = @"C:\WinPasswordFilter\settings.wpf";
         
         public MainWindow()
         {
@@ -67,12 +68,34 @@ namespace WinPasswordFilterClient
 
         private void loadMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: open file dialog and then call readsettings
+            OpenFileDialog theDialog = new OpenFileDialog();
+            theDialog.Title = "Open File";
+            theDialog.Filter = "WPF files|*.wpf";
+            theDialog.InitialDirectory = @"C:\";
+
+            if ((bool)theDialog.ShowDialog())
+            {
+                try
+                {
+                    readSettings(theDialog.FileName);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Save file corrupted");
+                }
+            }
         }
 
         private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: save file dialog and then call writesettings
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "save1.wpf";
+            savefile.Filter = "WPF files|*.wpf";
+
+            if ((bool)savefile.ShowDialog())
+            {
+                writeSettings(savefile.FileName);
+            }
         }
 
         private void partialMatchMenuItem_Click(object sender, RoutedEventArgs e)
@@ -116,6 +139,8 @@ namespace WinPasswordFilterClient
             System.IO.File.WriteAllText(file.FullName, lines);
             
         }
+
+        //TODO: are you sure you want to leave without saving settings
 
 
     }
