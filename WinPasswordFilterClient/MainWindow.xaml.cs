@@ -25,7 +25,47 @@ namespace WinPasswordFilterClient
             InitializeComponent();
         }
 
-        private void editPartialDictionary_Click(object sender, RoutedEventArgs e)
+        private void editPartialDictionaryButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void editExactDictionaryButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void applyButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void closeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void loadMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void saveMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void partialMatchMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void exactMatchMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void aboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
         }
