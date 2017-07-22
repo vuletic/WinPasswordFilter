@@ -24,5 +24,10 @@ namespace WinPasswordFilterClient
         {
             InitializeComponent();
         }
+
+        private void editPartialDictionary_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
