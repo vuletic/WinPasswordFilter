@@ -69,7 +69,7 @@ namespace WinPasswordFilterClient
 
         private void closeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO: exit, yes no ... for x also
         }
 
         private void loadMenuItem_Click(object sender, RoutedEventArgs e)

@@ -16,12 +16,21 @@ const wstring Root = L"C:\\WinPasswordFilter\\";
 const wstring LogFile = Root + L"FilterLog.txt";
 const wstring DictionaryFile = Root + L"Dictionary.txt";
 const wstring PartialDictionaryFile = Root + L"PartialDictionary.txt";
+const wstring SettingsFile = Root + L"settings.wpf";
 
+bool filterEnabled = true;
+bool partialEnabled = false;
+bool exactEnabled = false;
+bool userDataEnabled = false;
+bool logEnabled = true;
+
+int minChars;
+int maxChars;
 
 // This is a helper function to write log lines to file
 void WriteToLog(string str){
 
-	if (str.empty())
+	if (str.empty() || !logEnabled)
 	{
 		return;
 	}
@@ -39,6 +48,34 @@ void WriteToLog(string str){
 	}
 
 	return;
+}
+
+void ReadSettings() {
+	// TODO: try, if there is no file all can pass
+	ifstream settings(SettingsFile);
+	string line;
+	try
+	{
+		if (settings.is_open()) {
+			getline(settings, line);
+			partialEnabled = line == "1";
+			getline(settings, line);
+			exactEnabled = line == "1";
+			getline(settings, line);
+			userDataEnabled = line == "1";
+			getline(settings, line);
+			minChars = stoi(line);
+			getline(settings, line);
+			maxChars = stoi(line);
+
+			maxChars = maxChars == 0 ? 30000 : maxChars;
+		}
+	}
+	catch (const std::exception&)
+	{
+		return;
+	}
+
 }
 
 // Checks if the password exists in the dictionary
@@ -73,7 +110,6 @@ BOOLEAN DictionaryCheck(wstring pass) {
 }
 
 // check if password contains substring from dictionary
-// TODO: make case insensetive?
 BOOLEAN PartialCheck(wstring pass) {
 
 	wstring line;
@@ -136,7 +172,7 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 }
 
 
-BOOLEAN __stdcall PasswordFilter( // TODO: call checks based on settings 
+BOOLEAN __stdcall PasswordFilter( 
 	PUNICODE_STRING AccountName,
 	PUNICODE_STRING FullName,
 	PUNICODE_STRING Password,
@@ -146,11 +182,13 @@ BOOLEAN __stdcall PasswordFilter( // TODO: call checks based on settings
 
 	WriteToLog("Entering PasswordFilter()");
 
+	if (!filterEnabled) {
+		return true;
+	}
+
 	BOOLEAN retVal = true;
 
-	// TODO: read from settings (create function)
-	int minChars = 4;
-	int maxChars = 20;
+	ReadSettings();
 
 	wchar_t* wszPassword = NULL;
 	wstring wstrPassword;
@@ -201,17 +239,17 @@ BOOLEAN __stdcall PasswordFilter( // TODO: call checks based on settings
 			retVal = FALSE;
 		}
 
-		if (retVal){
+		if (retVal && userDataEnabled){
 			WriteToLog("User data check");
 			retVal = UserDataCheck(wstrAccountName, wstrFullName, wstrPassword);
 		}
 
-		if (retVal) {
+		if (retVal && partialEnabled) {
 			WriteToLog("Partial check");
 			retVal = PartialCheck(wstrPassword);
 		}
 
-		if (retVal) {
+		if (retVal && exactEnabled) {
 			WriteToLog("Full check");
 			retVal = DictionaryCheck(wstrPassword);
 		}
@@ -253,7 +291,7 @@ int main()
 
 	WCHAR stringBuffer[30] = L"koliko123";
 
-	WCHAR fnBuffer[40] = L"";
+	WCHAR fnBuffer[40] = L"David Vuletic";
 	WCHAR anBuffer[40] = L"Vuletic";
 	UNICODE_STRING  fn;
 	UNICODE_STRING  an;
