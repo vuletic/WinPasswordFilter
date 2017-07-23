@@ -23,7 +23,9 @@ namespace WinPasswordFilterClient
     public partial class MainWindow : Window
     {
         private const string _settingsFile = @"C:\WinPasswordFilter\settings.wpf";
-        
+        private const string _partialDictFile = @"C:\WinPasswordFilter\partialDictionary.txt";
+        private const string _exactDictFile = @"C:\WinPasswordFilter\dictionary.txt";
+
         public MainWindow()
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -40,12 +42,16 @@ namespace WinPasswordFilterClient
 
         private void editPartialDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DictionaryWindow pmdw = new DictionaryWindow("Partial match dictionary", _partialDictFile);
+            pmdw.Owner = this;
+            pmdw.ShowDialog();
         }
 
         private void editExactDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DictionaryWindow emdw = new DictionaryWindow("Exact match dictionary", _exactDictFile);
+            emdw.Owner = this;
+            emdw.ShowDialog();
         }
 
         private void applyButton_Click(object sender, RoutedEventArgs e)
@@ -100,12 +106,16 @@ namespace WinPasswordFilterClient
 
         private void partialMatchMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            DictionaryWindow pmdw = new DictionaryWindow("Partial match dictionary", _partialDictFile);
+            pmdw.Owner = this;
+            pmdw.ShowDialog();
         }
 
         private void exactMatchMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            DictionaryWindow emdw = new DictionaryWindow("Exact match dictionary", _exactDictFile);
+            emdw.Owner = this;
+            emdw.ShowDialog();
         }
 
         private void aboutMenuItem_Click(object sender, RoutedEventArgs e)
