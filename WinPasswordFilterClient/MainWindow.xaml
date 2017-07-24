@@ -6,12 +6,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinPasswordFilterClient"
         mc:Ignorable="d"
-        Title="WinPasswordFilter" Height="480" Width="640" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/Icons/main-icon-3.ico">
+        Title="WinPasswordFilter" Height="400" Width="640" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/Icons/main-icon-3.ico">
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Save..." Name="saveMenuItem" ToolTip="Save current settings to external file" Click="saveMenuItem_Click">
+                <MenuItem Header="_File" IsTabStop="False">
+                    <MenuItem Header="_Save..." Name="saveMenuItem" ToolTip="Save current settings to external file" Click="saveMenuItem_Click" IsTabStop="False">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Resources/Icons/save2.png" />
                         </MenuItem.Icon>
@@ -27,7 +27,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Edit">
+                <MenuItem Header="_Edit" IsTabStop="False">
                     <MenuItem Header="Partial match dictionary" Name="partialMatchMenuItem" Click="partialMatchMenuItem_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Resources/Icons/notebook1.png" />
@@ -39,10 +39,10 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Settings">
+                <MenuItem Header="_Settings" IsTabStop="False">
 
                 </MenuItem>
-                <MenuItem Header="_Help">
+                <MenuItem Header="_Help" IsTabStop="False">
                     <MenuItem Header="_About" Name="aboutMenuItem" Click="aboutMenuItem_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Resources/Icons/about2.png" />
@@ -53,28 +53,39 @@
         </DockPanel>
             
         <StackPanel Margin="30,50,0,0" >
-            <CheckBox Name="partialMatchDictionaryValue" Margin="0,10,0,0" Content="Partial match dictionary" ToolTip="When enabled, passwords that contain substrings from the partial match dictionary will not be permitted." />
-            <CheckBox Name="exactMatchDictionaryValue" Margin="0,12,0,0" Content="Exact match dictionary" ToolTip="When enabled, passwords that exactly match strings from the exact match dictionary will not be permitted."/>
-            <CheckBox Name="userDataValue" Margin="0,12,0,0" Content="Prevent user data in password" ToolTip="When enabled, passwords that contain user account name or full name will not be permitted."/>
+            <CheckBox Name="enableFilterValue" Margin="0,10,0,0" Content="Enable filter" ToolTip="Enable/Disable the filter" VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="True" />
+            <CheckBox Name="enableLoggingValue" Margin="0,10,0,0" Content="Enable filter log" ToolTip="When enabled, the work of the filter is logged in a file." VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="True" />
+            <CheckBox Name="partialMatchDictionaryValue" Margin="0,10,0,0" Content="Partial match dictionary" ToolTip="When enabled, passwords that contain substrings from the partial match dictionary will not be permitted." VerticalAlignment="Top" HorizontalAlignment="Left" />
+            <CheckBox Name="exactMatchDictionaryValue" Margin="0,12,0,0" Content="Exact match dictionary" ToolTip="When enabled, passwords that exactly match strings from the exact match dictionary will not be permitted." VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <CheckBox Name="userDataValue" Margin="0,12,0,0" Content="Prevent user data in password" ToolTip="When enabled, passwords that contain user account name or full name will not be permitted." VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                 
             </StackPanel>
             
         </StackPanel>
 
-        <Label Content="Min characters:" Margin="27,148,500,270" ToolTip="Minimal number of characters for password"/>
-        <xctk:IntegerUpDown Margin="131,149,451,269" x:Name="minCharactersValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" Maximum="32" />
-        <Label Content="Max characters:" Margin="27,186,500,231" ToolTip="Maximal number of characters for password. Set to 0 to disable."/>
-        <xctk:IntegerUpDown Margin="131,187,451,230" x:Name="maxCharactersValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" />
         
-        <GroupBox Margin="310,50,21,210" Header="Character requirements" IsEnabled="False">
-            <!-- TODO: sign types and number of characers of that type (uppercase, lowercase, number, special chars)-->
-            
+        
+        <GroupBox Margin="310,50,21,170" Header="Character requirements">
+            <Grid Margin="0,0,0,-76">
+                <Label Content="Min characters:" Margin="22,20,0,0" ToolTip="Minimum number of characters for password" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <xctk:IntegerUpDown Margin="137,24,0,0" x:Name="minCharactersValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" Maximum="100" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <Label Content="Max characters:" Margin="22,50,0,0" ToolTip="Maximum number of characters for password. Set to 0 to disable." HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <xctk:IntegerUpDown Margin="137,54,0,0" x:Name="maxCharactersValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <Label Content="Lowercase letters:" ToolTip="Minimum number of lowercase characters for password" HorizontalAlignment="Left" Margin="22,80,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                <xctk:IntegerUpDown Margin="137,84,0,0" x:Name="lowercasesValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <Label Content="Uppercase letters:" ToolTip="Minimum number of uppercase characters for password" HorizontalAlignment="Left" Margin="22,110,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                <xctk:IntegerUpDown Margin="137,114,0,0" x:Name="uppercasesValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <Label Content="Digits:" ToolTip="Minimum number of digits for password" HorizontalAlignment="Left" Margin="22,140,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                <xctk:IntegerUpDown Margin="137,144,0,0" x:Name="digitsValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <Label Content="Special characters:" ToolTip="Minimum number of special characters for password" HorizontalAlignment="Left" Margin="22,170,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                <xctk:IntegerUpDown Margin="137,174,0,0" x:Name="specialsValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            </Grid>
         </GroupBox>
         
         <Button x:Name="applyButton" Content="Apply" HorizontalAlignment="Right" Margin="0,0,21,10" VerticalAlignment="Bottom" Width="75" ToolTip="Apply changes" Click="applyButton_Click"/>
-        <Button x:Name="editPartialDictionaryButton" Content="Edit partial match dictionary..." HorizontalAlignment="Left" Margin="30,268,0,0" VerticalAlignment="Top" Width="197" Click="editPartialDictionaryButton_Click"/>
-        <Button x:Name="editExactDictionaryButton" Content="Edit exact match dictionary..." HorizontalAlignment="Left" Margin="30,303,0,0" VerticalAlignment="Top" Width="197" Click="editExactDictionaryButton_Click"/>
+        <Button x:Name="editPartialDictionaryButton" Content="Edit partial match dictionary..." HorizontalAlignment="Left" Margin="30,203,0,0" VerticalAlignment="Top" Width="197" Click="editPartialDictionaryButton_Click"/>
+        <Button x:Name="editExactDictionaryButton" Content="Edit exact match dictionary..." HorizontalAlignment="Left" Margin="30,238,0,0" VerticalAlignment="Top" Width="197" Click="editExactDictionaryButton_Click"/>
 
 
 

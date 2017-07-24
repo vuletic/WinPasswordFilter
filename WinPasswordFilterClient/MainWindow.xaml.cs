@@ -127,22 +127,34 @@ namespace WinPasswordFilterClient
         {
             string[] lines = System.IO.File.ReadAllLines(path);
             
-            partialMatchDictionaryValue.IsChecked = lines[0].Equals("1");
-            exactMatchDictionaryValue.IsChecked = lines[1].Equals("1");
-            userDataValue.IsChecked = lines[2].Equals("1");
-            minCharactersValue.Value = Int32.Parse(lines[3]);
-            maxCharactersValue.Value = Int32.Parse(lines[4]);
+            enableFilterValue.IsChecked = lines[0].Equals("1");
+            enableLoggingValue.IsChecked = lines[1].Equals("1");
+            partialMatchDictionaryValue.IsChecked = lines[2].Equals("1");
+            exactMatchDictionaryValue.IsChecked = lines[3].Equals("1");
+            userDataValue.IsChecked = lines[4].Equals("1");
+            minCharactersValue.Value = Int32.Parse(lines[5]);
+            maxCharactersValue.Value = Int32.Parse(lines[6]);
+            lowercasesValue.Value = Int32.Parse(lines[7]);
+            uppercasesValue.Value = Int32.Parse(lines[8]);
+            digitsValue.Value = Int32.Parse(lines[9]);
+            specialsValue.Value = Int32.Parse(lines[10]);
         }
 
         private void writeSettings(string path)
         {
             string lines = "";
 
+            lines += (bool)enableFilterValue.IsChecked ? "1\r\n" : "0\r\n";
+            lines += (bool)enableLoggingValue.IsChecked ? "1\r\n" : "0\r\n";
             lines += (bool)partialMatchDictionaryValue.IsChecked ? "1\r\n" : "0\r\n";
             lines += (bool)exactMatchDictionaryValue.IsChecked ? "1\r\n" : "0\r\n";
             lines += (bool)userDataValue.IsChecked ? "1\r\n" : "0\r\n";
             lines += minCharactersValue.Value + "\r\n";
             lines += maxCharactersValue.Value + "\r\n";
+            lines += lowercasesValue.Value + "\r\n";
+            lines += uppercasesValue.Value + "\r\n";
+            lines += digitsValue.Value + "\r\n";
+            lines += specialsValue.Value + "\r\n";
 
             System.IO.FileInfo file = new System.IO.FileInfo(path);
             file.Directory.Create();
