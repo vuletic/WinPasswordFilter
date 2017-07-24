@@ -19,13 +19,17 @@ const wstring PartialDictionaryFile = Root + L"PartialDictionary.txt";
 const wstring SettingsFile = Root + L"settings.wpf";
 
 bool filterEnabled = true;
+bool logEnabled = true;
 bool partialEnabled = false;
 bool exactEnabled = false;
 bool userDataEnabled = false;
-bool logEnabled = true;
 
-int minChars;
-int maxChars;
+int minChars = 0;
+int maxChars = 0;
+int lowercases = 0;
+int uppercases = 0;
+int numbers = 0;
+int specials = 0;
 
 // This is a helper function to write log lines to file
 void WriteToLog(string str) {
@@ -58,6 +62,10 @@ void ReadSettings() {
 	{
 		if (settings.is_open()) {
 			getline(settings, line);
+			filterEnabled = line == "1";
+			getline(settings, line);
+			logEnabled = line == "1";
+			getline(settings, line);
 			partialEnabled = line == "1";
 			getline(settings, line);
 			exactEnabled = line == "1";
@@ -67,8 +75,17 @@ void ReadSettings() {
 			minChars = stoi(line);
 			getline(settings, line);
 			maxChars = stoi(line);
-
 			maxChars = maxChars == 0 ? 30000 : maxChars;
+			getline(settings, line);
+			lowercases = stoi(line);
+			getline(settings, line);
+			uppercases = stoi(line);
+			getline(settings, line);
+			numbers = stoi(line);
+			getline(settings, line);
+			specials = stoi(line);
+
+			settings.close();
 		}
 	}
 	catch (const std::exception&)
@@ -137,7 +154,7 @@ BOOLEAN PartialCheck(wstring pass) {
 
 }
 
-// TODO: watch for unicode
+// TODO: watch for unicode?
 BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 
 	// transform to lowercase for case insensitivity
@@ -220,13 +237,16 @@ BOOLEAN __stdcall PasswordFilter(
 
 	WriteToLog("Entering PasswordFilter()");
 
+	ReadSettings();
+
 	if (!filterEnabled) {
 		return true;
 	}
 
 	BOOLEAN retVal = true;
 
-	ReadSettings();
+	WriteToLog(to_string(filterEnabled) + " " + to_string(logEnabled) + " " + to_string(partialEnabled) + " " +
+		to_string(exactEnabled) + " " + to_string(userDataEnabled) + " " + to_string(minChars) + " " + to_string(maxChars));
 
 	wchar_t* wszPassword = NULL;
 	wstring wstrPassword;
@@ -246,7 +266,7 @@ BOOLEAN __stdcall PasswordFilter(
 			throw E_OUTOFMEMORY;
 		}
 		wcsncpy(wszPassword, Password->Buffer, Password->Length);
-		wszPassword[Password->Length] = 0;
+		wszPassword[Password->Length / sizeof(wchar_t)] = 0;
 		wstrPassword = wszPassword;
 
 
@@ -256,7 +276,7 @@ BOOLEAN __stdcall PasswordFilter(
 			throw E_OUTOFMEMORY;
 		}
 		wcsncpy(wszAccountName, AccountName->Buffer, AccountName->Length);
-		wszAccountName[AccountName->Length] = 0;
+		wszAccountName[AccountName->Length / sizeof(wchar_t)] = 0;
 		wstrAccountName = wszAccountName;
 
 
@@ -266,14 +286,36 @@ BOOLEAN __stdcall PasswordFilter(
 			throw E_OUTOFMEMORY;
 		}
 		wcsncpy(wszFullName, FullName->Buffer, FullName->Length);
-		wszFullName[FullName->Length] = 0;
+		wszFullName[FullName->Length / sizeof(wchar_t)] = 0;
 		wstrFullName = wszFullName;
 
+		// Count characters
+		int pLowercases = 0;
+		int pUppercases = 0;
+		int pNumbers = 0;
+		int pSpecials = 0;
+		int pTotal = 0;
+		int i = 0;
 
+		while (wstrPassword[i] != L'\0') {
+			if (isupper(wstrPassword[i]))
+				pUppercases++;
+			else if (islower(wstrPassword[i]))
+				pLowercases++;
+			else if (isdigit(wstrPassword[i]))
+				pNumbers++;
+			else
+				pSpecials++;
+
+			pTotal++;
+			i++;
+		}
 
 		// Perform checks
-		WriteToLog("Number of characters check");
-		if (wstrPassword.length() < minChars || wstrPassword.length() > maxChars) {
+		WriteToLog("Number of characters check: " + to_string(wstrPassword.length()) + " " + to_string(pTotal));
+		if (pTotal < minChars || pTotal > maxChars || pNumbers < numbers || pUppercases < uppercases ||
+			pLowercases < lowercases || pSpecials < specials) {
+
 			retVal = FALSE;
 		}
 
