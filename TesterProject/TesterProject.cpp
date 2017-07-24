@@ -25,7 +25,7 @@ bool exactEnabled = false;
 bool userDataEnabled = false;
 
 int minChars = 0;
-int maxChars = 0;
+int maxChars = 30000;
 int lowercases = 0;
 int uppercases = 0;
 int numbers = 0;
