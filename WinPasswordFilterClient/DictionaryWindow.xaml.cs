@@ -28,6 +28,7 @@ namespace WinPasswordFilterClient
         public DictionaryWindow(string title, string filePath)
         {
             InitializeComponent();
+            this.KeyDown += HandleKeyPress;
             this.Title = title;
             dictFile = filePath;
             if (!File.Exists(dictFile))
@@ -96,6 +97,19 @@ namespace WinPasswordFilterClient
             File.WriteAllLines(dictFile,  File.ReadLines(dictFile).Where(l => l != pwdValue.Text.ToLowerInvariant()).ToList());
             pwdValue.Text = "";
             pwdValue.Focus();
+        }
+
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return && pwdValue.IsFocused)
+            {
+                using (StreamWriter w = File.AppendText(dictFile))
+                {
+                    w.WriteLine(pwdValue.Text.ToLowerInvariant());
+                    pwdValue.Text = "";
+                    pwdValue.Focus();
+                }
+            }
         }
     }
 }

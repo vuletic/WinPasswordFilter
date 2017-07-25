@@ -30,6 +30,7 @@ namespace WinPasswordFilterClient
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            this.KeyDown += HandleKeyPress;
             try
             {
                 readSettings(_settingsFile);
@@ -69,39 +70,17 @@ namespace WinPasswordFilterClient
 
         private void closeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: exit, yes no ... for x also
+            this.Close();
         }
 
         private void loadMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog theDialog = new OpenFileDialog();
-            theDialog.Title = "Open File";
-            theDialog.Filter = "WPF files|*.wpf";
-            theDialog.InitialDirectory = @"C:\";
-
-            if ((bool)theDialog.ShowDialog())
-            {
-                try
-                {
-                    readSettings(theDialog.FileName);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Save file corrupted");
-                }
-            }
+            Load();
         }
 
         private void saveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = "save1.wpf";
-            savefile.Filter = "WPF files|*.wpf";
-
-            if ((bool)savefile.ShowDialog())
-            {
-                writeSettings(savefile.FileName);
-            }
+            Save();
         }
 
         private void partialMatchMenuItem_Click(object sender, RoutedEventArgs e)
@@ -161,8 +140,64 @@ namespace WinPasswordFilterClient
             System.IO.File.WriteAllText(file.FullName, lines);
             
         }
-
         //TODO: are you sure you want to leave without saving settings
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to exit the application?", "Exit Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+
+        }
+
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if(e.Key == Key.S)
+                {
+                    Save();
+                }
+                if(e.Key == Key.O)
+                {
+                    Load();
+                }
+               
+            }
+        }
+
+        private void Save()
+        {
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "save1.wpf";
+            savefile.Filter = "WPF files|*.wpf";
+
+            if ((bool)savefile.ShowDialog())
+            {
+                writeSettings(savefile.FileName);
+            }
+        }
+
+        private void Load()
+        {
+            OpenFileDialog theDialog = new OpenFileDialog();
+            theDialog.Title = "Open File";
+            theDialog.Filter = "WPF files|*.wpf";
+            theDialog.InitialDirectory = @"C:\";
+
+            if ((bool)theDialog.ShowDialog())
+            {
+                try
+                {
+                    readSettings(theDialog.FileName);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Save file corrupted");
+                }
+            }
+        }
 
 
     }

@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinPasswordFilterClient"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Closing="WindowClosing"
         Title="WinPasswordFilter" Height="400" Width="640" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/Icons/main-icon-3.ico">
     <Grid>
         <DockPanel>
@@ -66,7 +66,7 @@
 
         
         
-        <GroupBox Margin="310,50,21,170" Header="Character requirements">
+        <GroupBox Margin="310,50,21,79" Header="Character requirements">
             <Grid Margin="0,0,0,-76">
                 <Label Content="Min characters:" Margin="22,20,0,0" ToolTip="Minimum number of characters for password" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <xctk:IntegerUpDown Margin="137,24,0,0" x:Name="minCharactersValue" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" Minimum="0" Maximum="100" VerticalAlignment="Top" HorizontalAlignment="Left" />

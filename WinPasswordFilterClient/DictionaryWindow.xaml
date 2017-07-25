@@ -5,21 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinPasswordFilterClient"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="Dictionary" Height="220" Width="440" Icon="pack://application:,,,/Resources/Icons/notebook1.png" Background="#FFF0F0F0">
-    
+        Title="Dictionary" Height="190" Width="440" Icon="pack://application:,,,/Resources/Icons/notebook1.png" Background="#FFF0F0F0">
+
     <Grid>
-        <Label x:Name="pwdLabel" Content="Password:" HorizontalAlignment="Left" Margin="17,40,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="pwdValue" HorizontalAlignment="Left" Height="23" Margin="84,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="276" MaxLines="1"/>
-        <Button x:Name="addButton" HorizontalAlignment="Left" Margin="372,44,0,0" VerticalAlignment="Top" BorderBrush="#FFF0F0F0" Background="#FFF0F0F0" ToolTip="Add password to dictionary" Click="addButton_Click" IsDefault="True">
-            +
+        <ToolBarTray DockPanel.Dock="Top" Margin="0" IsHitTestVisible="True" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ToolBar>
+                <Button x:Name="openDictionaryButton" Click="openDictionaryButton_Click" ToolTip="Open current dictionary">
+                    <Image Source="Resources/Icons/opendict.png" Width="24" Height="24" />
+                </Button>
+                <Button x:Name="importButton" Click="importButton_Click" ToolTip="Import external dictionary">
+                    <Image Source="Resources/Icons/import.png" Width="24" Height="24" />
+                </Button>
+                <Button x:Name="exportButton" Click="exportButton_Click" ToolTip="Export current dictionary">
+                    <Image Source="Resources/Icons/export.png" Width="24" Height="24" />
+                </Button>
+                
+            </ToolBar>
+        </ToolBarTray>
+
+
+        <Label x:Name="pwdLabel" Content="Password:" HorizontalAlignment="Left" Margin="14,60,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="pwdValue" HorizontalAlignment="Left" Height="23" Margin="81,62,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264" MaxLines="1"/>
+        <Button x:Name="addButton" HorizontalAlignment="Left" Margin="350,59,0,0" VerticalAlignment="Top" BorderBrush="#FFF0F0F0" Background="#FFF0F0F0" ToolTip="Add password to dictionary" Click="addButton_Click" Width="28" Height="28">
+            <Image Source="Resources/Icons/add2.png" HorizontalAlignment="Left" VerticalAlignment="Top" />
         </Button>
-        <Button x:Name="removeButton" HorizontalAlignment="Left" Margin="389,44,0,0" VerticalAlignment="Top" Height="21" Width="21" BorderBrush="#FFF0F0F0" Background="#FFF0F0F0" ToolTip="Remove password from dictionary" Click="removeButton_Click">
-            -
+        <Button x:Name="removeButton" HorizontalAlignment="Left" Margin="379,59,0,0" VerticalAlignment="Top" Height="28" Width="28" BorderBrush="#FFF0F0F0" Background="#FFF0F0F0" ToolTip="Remove password from dictionary" Click="removeButton_Click">
+            <Image Source="Resources/Icons/remove2.png" HorizontalAlignment="Left" VerticalAlignment="Top" Width="24" />
         </Button>
-        <Button x:Name="openDictionaryButton" Content="Open dictionary" HorizontalAlignment="Left" Margin="17,90,0,0" VerticalAlignment="Top" Width="75" Click="openDictionaryButton_Click" ToolTip="Open current dictionary"/>
-        <Button x:Name="exportButton" Content="Export" HorizontalAlignment="Left" Margin="111,90,0,0" VerticalAlignment="Top" Width="75" Click="exportButton_Click" ToolTip="Export current dictionary"/>
-        <Button x:Name="importButton" Content="Import" HorizontalAlignment="Left" Margin="208,90,0,0" VerticalAlignment="Top" Width="75" Click="importButton_Click" ToolTip="Import external dictionary"/>
-        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Left" Margin="335,152,0,0" VerticalAlignment="Top" Width="75" Click="okButton_Click" />
+        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,15,12" VerticalAlignment="Bottom" Width="61" Click="okButton_Click" />
 
 
 
