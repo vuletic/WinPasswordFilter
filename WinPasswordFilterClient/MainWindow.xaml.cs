@@ -99,7 +99,9 @@ namespace WinPasswordFilterClient
 
         private void aboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: info about project, author, description
+            AboutWindow about = new AboutWindow();
+            about.Owner = this;
+            about.ShowDialog();
         }
 
         private void readSettings(string path)

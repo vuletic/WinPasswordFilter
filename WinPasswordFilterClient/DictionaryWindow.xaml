@@ -8,8 +8,8 @@
         Title="Dictionary" Height="190" Width="440" Icon="pack://application:,,,/Resources/Icons/notebook1.png" Background="#FFF0F0F0">
 
     <Grid>
-        <ToolBarTray DockPanel.Dock="Top" Margin="0" IsHitTestVisible="True" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <ToolBar>
+        <ToolBarTray DockPanel.Dock="Top" Margin="0" IsHitTestVisible="True" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFF0F0F0">
+            <ToolBar Background="#FFF0F0F0">
                 <Button x:Name="openDictionaryButton" Click="openDictionaryButton_Click" ToolTip="Open current dictionary">
                     <Image Source="Resources/Icons/opendict.png" Width="24" Height="24" />
                 </Button>
