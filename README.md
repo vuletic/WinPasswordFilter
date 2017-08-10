@@ -1,5 +1,5 @@
 # WinPasswordFilter
-WinPasswordFilter is a custom password filter dll for Windows that comes with a client application for setting a password policy. The desired password complexity can be configured in many ways:
+WinPasswordFilter is a custom password filter dll for Windows that comes with a client application for setting a password policy. The desired password complexity can be configured in the following ways:
 + Set minimum number of characters
 + Set maximum number of characters
 + Set minimum number of uppercase/lowercase/digit/special characters
