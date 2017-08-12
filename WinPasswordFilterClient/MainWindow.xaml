@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinPasswordFilterClient"
         mc:Ignorable="d" Closing="WindowClosing"
-        Title="WinPasswordFilter" Height="400" Width="640" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/Icons/main-icon-3.ico">
+        Title="WinPasswordFilter" Height="400" Width="640" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/Icons/main-icon-3.ico" Background="#FFF0F0F0">
     <Grid>
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
                 <MenuItem Header="_File" IsTabStop="False">
                     <MenuItem Header="_Save..." Name="saveMenuItem" ToolTip="Save current settings to external file" Click="saveMenuItem_Click" IsTabStop="False">
                         <MenuItem.Icon>
