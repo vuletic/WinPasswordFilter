@@ -13,8 +13,8 @@ The dictionaries can be imported and exported. Password policies can also be sav
 
 ## Installation
 ### Prerequisites
-+ .NET Framework 4.6.2
-+ Visual C++ 2015 Redistributable
++ [.NET Framework 4.6.2](https://www.microsoft.com/en-us/download/details.aspx?id=53344)
++ [Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 ### Procedure
 1. Run installer (x86 for 32-bit Windows, and x64 for 64-bit)
 2. Run regfilter.bat (from the installation folder) **as administrator**
