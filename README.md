@@ -12,7 +12,13 @@ There are two dictionaries that can be edited from within the application or by 
 The dictionaries can be imported and exported. Password policies can also be saved and loaded. Logging of the dll's work can be enabled and disabled.
 
 ## Installation
-x64 and x86
+### Prerequisites
++ .NET Framework 4.6.2
++ Visual C++ 2015 Redistributable
+### Procedure
+1. Run installer (x86 for 32-bit Windows, and x64 for 64-bit)
+2. Run regfilter.bat (from the installation folder) **as administrator**
+3. Restart your computer  
 
 ## Author
 David Vuletić - [vuletic](https://github.com/vuletic) <br/>
