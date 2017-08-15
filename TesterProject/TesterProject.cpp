@@ -206,9 +206,6 @@ BOOLEAN __stdcall PasswordFilter(
 
 	BOOLEAN retVal = true;
 
-	WriteToLog(to_string(filterEnabled) + " " + to_string(logEnabled) + " " + to_string(partialEnabled) + " " +
-		to_string(exactEnabled) + " " + to_string(userDataEnabled) + " " + to_string(minChars) + " " + to_string(maxChars));
-
 	wchar_t* wszPassword = NULL;
 	wstring wstrPassword;
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace WinPasswordFilterClient
         private const string _settingsFile = @"C:\WinPasswordFilter\settings.wpf";
         private const string _partialDictFile = @"C:\WinPasswordFilter\partialDictionary.txt";
         private const string _exactDictFile = @"C:\WinPasswordFilter\dictionary.txt";
+        private const string _directory = @"C:\WinPasswordFilter";
 
         public MainWindow()
         {
@@ -136,6 +138,16 @@ namespace WinPasswordFilterClient
             lines += uppercasesValue.Value + "\r\n";
             lines += digitsValue.Value + "\r\n";
             lines += specialsValue.Value + "\r\n";
+
+            FileSystemAccessRule administratorRule = new FileSystemAccessRule("Administrators", FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
+
+            FileSystemAccessRule guestRule = new FileSystemAccessRule("Guest", FileSystemRights.CreateDirectories | FileSystemRights.CreateFiles, AccessControlType.Allow);
+
+            DirectorySecurity dirSec = new DirectorySecurity();
+            dirSec.AddAccessRule(administratorRule);
+            dirSec.AddAccessRule(guestRule);
+
+            Directory.CreateDirectory(_directory, dirSec);
 
             System.IO.FileInfo file = new System.IO.FileInfo(path);
             file.Directory.Create();
