@@ -16,9 +16,8 @@ The dictionaries can be imported and exported. Password policies can also be sav
 + [.NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642)
 + [Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 ### Procedure
-1. Run installer ([x86](https://ufile.io/brdii) for 32-bit Windows, and [x64](https://ufile.io/paeeg) for 64-bit)
-2. Run regfilter.bat (from the installation folder) **as administrator**
-3. Restart your computer  
+1. Run setup.exe ([x86](https://ufile.io/brdii) for 32-bit Windows, and [x64](https://ufile.io/paeeg) for 64-bit) **as administrator**
+2. Restart your computer  
 
 ## Author
 David Vuletić - [vuletic](https://github.com/vuletic) <br/>
