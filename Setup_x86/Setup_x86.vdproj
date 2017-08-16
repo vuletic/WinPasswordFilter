@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4526A331C07742A48041A539E852C373"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4ADD096599DEBE3EAD6A3D328600A5B5"
         "OwnerKey" = "8:_CCC33A3E94F049528696D1BE40CD30AE"
         "MsmSig" = "8:_UNDEFINED"
@@ -77,12 +83,6 @@
         {
         "MsmKey" = "8:_7C1A3431B26E4827029C175F791D22A3"
         "OwnerKey" = "8:_C033FFF3723D3FA1032146220449FAF7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BF2DB9C7C2994334AC26A54F91D0C830"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -222,6 +222,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_9F906907D86B45D0B19ED41E9A08FEB0"
+            {
+            "Name" = "8:regfilter32.exe"
+            "Condition" = "8:"
+            "Object" = "8:_4526A331C07742A48041A539E852C373"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:/Commit"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_60A57114_46A5_4F54_8CDD_F27E5338C64A"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -325,6 +339,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4526A331C07742A48041A539E852C373"
+            {
+            "SourcePath" = "8:..\\Resources\\regfilter32.exe"
+            "TargetName" = "8:regfilter32.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_B21DD7D2066549B4A23F0518D5FD4571"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4ADD096599DEBE3EAD6A3D328600A5B5"
@@ -449,26 +483,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF2DB9C7C2994334AC26A54F91D0C830"
-            {
-            "SourcePath" = "8:..\\Resources\\regfilter.bat"
-            "TargetName" = "8:regfilter.bat"
-            "Tag" = "8:"
-            "Folder" = "8:_B21DD7D2066549B4A23F0518D5FD4571"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C033FFF3723D3FA1032146220449FAF7"

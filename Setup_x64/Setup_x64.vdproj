@@ -27,7 +27,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B41B5DA553D42EC972C2861F8A3F3A8"
+        "MsmKey" = "8:_0804E81244694E59B8F568437EB7F521"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -228,6 +228,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_90D88172A2BC426ABF05197E25E5A32C"
+            {
+            "Name" = "8:regfilter.exe"
+            "Condition" = "8:"
+            "Object" = "8:_0804E81244694E59B8F568437EB7F521"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:/Commit"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_09AB6CDF_DE43_4D7E_AD73_5B9C32856629"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -282,10 +296,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B41B5DA553D42EC972C2861F8A3F3A8"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0804E81244694E59B8F568437EB7F521"
             {
-            "SourcePath" = "8:..\\Resources\\regfilter.bat"
-            "TargetName" = "8:regfilter.bat"
+            "SourcePath" = "8:..\\Resources\\regfilter.exe"
+            "TargetName" = "8:regfilter.exe"
             "Tag" = "8:"
             "Folder" = "8:_2D299D0DEE064BD1A0733B6C1D5A5B76"
             "Condition" = "8:"
@@ -583,7 +597,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:WinPasswordFilter"
         "ProductCode" = "8:{6808C700-968F-49B8-8B91-EC123CFC650B}"
-        "PackageCode" = "8:{DA20932F-FF7C-4C70-B560-A978A5817B21}"
+        "PackageCode" = "8:{63FFE65C-09A3-4BE2-9E41-1A4948257402}"
         "UpgradeCode" = "8:{DF6BA35F-9F39-4D9C-9CF7-88029E75F0FB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
