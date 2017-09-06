@@ -55,7 +55,7 @@ void WriteToLog(string str) {
 }
 
 void ReadSettings() {
-	// TODO: try, if there is no file all can pass
+	
 	ifstream settings(SettingsFile);
 	string line;
 	try
@@ -96,12 +96,9 @@ void ReadSettings() {
 }
 
 // Checks if the password exists in the dictionary
-// TODO: maybe invert true/false?
-// TODO: optimize file search
-// TODO: clear password from memory!!! securezeromemory
 BOOLEAN DictionaryCheck(wstring pass) {
 
-	wstring line;
+	wstring line; 
 	wifstream dict(DictionaryFile);
 
 	//transform to lowercase for case insensitivity
@@ -112,6 +109,8 @@ BOOLEAN DictionaryCheck(wstring pass) {
 		while (getline(dict, line))
 		{
 			if (line == pass) {
+				pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+				pass.erase();
 				dict.close();
 				return FALSE;
 			}
@@ -119,9 +118,13 @@ BOOLEAN DictionaryCheck(wstring pass) {
 		dict.close();
 	}
 	else { // RETURNS TRUE IF FILE CANNOT BE OPENED (does not exist)
+		pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+		pass.erase();
 		return TRUE;
 	}
 
+	pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+	pass.erase();
 	return TRUE;
 
 }
@@ -140,6 +143,8 @@ BOOLEAN PartialCheck(wstring pass) {
 		while (getline(dict, line))
 		{
 			if (pass.find(line) != string::npos) {
+				pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+				pass.erase();
 				dict.close();
 				return FALSE;
 			}
@@ -147,9 +152,12 @@ BOOLEAN PartialCheck(wstring pass) {
 		dict.close();
 	}
 	else { // RETURNS TRUE IF FILE CANNOT BE OPENED (does not exist)
+		pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+		pass.erase();
 		return TRUE;
 	}
-
+	pass.replace(0, pass.length(), pass.length(), (wchar_t)'?');
+	pass.erase();
 	return TRUE;
 
 }
@@ -176,15 +184,20 @@ BOOLEAN UserDataCheck(wstring accName, wstring fullName, wstring pwd) {
 		token = fullName.substr(0, pos);
 		fullName.erase(0, pos + delimiter.length());
 		if (pwd.find(token) != string::npos) {
+			pwd.replace(0, pwd.length(), pwd.length(), (wchar_t)'?');
+			pwd.erase();
 			return FALSE;
 		}
 	}
 
 	if (fullName != L"" && pwd.find(fullName) != string::npos) {
+		pwd.replace(0, pwd.length(), pwd.length(), (wchar_t)'?');
+		pwd.erase();
 		return FALSE;
 	}
 
-
+	pwd.replace(0, pwd.length(), pwd.length(), (wchar_t)'?');
+	pwd.erase();
 	return TRUE;
 }
 
@@ -344,7 +357,7 @@ BOOLEAN __stdcall PasswordFilter(
 
 	// Erase all temporary password data
 	// for security reasons
-	wstrPassword.replace(0, wstrPassword.length(), wstrPassword.length(), (wchar_t)'?');  // TODO: same thing on copies in functions?
+	wstrPassword.replace(0, wstrPassword.length(), wstrPassword.length(), (wchar_t)'?');  
 	wstrPassword.erase();
 	if (NULL != wszPassword)
 	{
